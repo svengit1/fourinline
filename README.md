@@ -1,8 +1,8 @@
-##Four In Line
+# Four In Line
 
 The game is played on a grid with tokens in two colors by two players. The goal is to place four tokens in a vertical, horizontal or diagonal line. A player who succeeds to form four tokens inline wins the game. 
 
-#Project setup
+## Project setup
 
 To setup the project virtual environment and needed dependencies execute following commands:  
 
