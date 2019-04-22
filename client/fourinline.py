@@ -1,14 +1,14 @@
 import pyglet
 from pyglet.window import key
-from game_logic import *
+
+import game_logic
+from pointer import Pointer
+from coin import Coin
 
 # Resources loading
-red_coin_image = pyglet.resource.image('assets/coin-red.png')
-blue_coin_image = pyglet.resource.image('assets/coin-blue.png')
+
 board_image = pyglet.resource.image('assets/board.png')
 
-pointer_red_image = pyglet.resource.image('assets/pointer-red.png')
-pointer_blue_image = pyglet.resource.image('assets/pointer-blue.png')
 
 # Init
 w = 581
@@ -18,13 +18,11 @@ active_player = 'blue'
 
 window = pyglet.window.Window(w, h)
 
-blue_coins = []
-red_coins = []
+coins = []
 blue_coin_batch = pyglet.graphics.Batch()
 red_coin_batch = pyglet.graphics.Batch()
 
-pointer = pyglet.sprite.Sprite(pointer_blue_image, 25+(80*6), 470)
-pointer.scale = 0.4
+pointer = Pointer()
 
 
 @window.event
@@ -34,24 +32,36 @@ def on_draw():
 
     pointer.draw()
 
+    blue_coin_batch.draw()
+    red_coin_batch.draw()
+
 
 @window.event
 def on_key_press(symbol, modifiers):
     global active_player
 
     if symbol == key.LEFT:
-        if pointer.x != 25:
-            pointer.x -= 80
+        pointer.move_left()
     elif symbol == key.RIGHT:
-        if pointer.x != 505:
-            pointer.x += 80
+        pointer.move_right()
 
     if symbol == key.ENTER or symbol == key.SPACE:
+        coin = Coin(pointer.x - 3, game_logic.calculate_coin_y(pointer.column))
+        coin.scale = 0.3
+
         if active_player == 'red':
-            pointer.image = pointer_red_image
+            pointer.set_color('red')
+
+            coin.set_batch(red_coin_batch)
+            coin.set_color('red')
         else:
-            pointer.image = pointer_blue_image
-        active_player = turn(active_player)
+            pointer.set_color('blue')
+
+            coin.set_batch(blue_coin_batch)
+            coin.set_color('blue')
+
+        coins.append(coin)
+        active_player = game_logic.turn(active_player)
 
 
 if __name__ == '__main__':

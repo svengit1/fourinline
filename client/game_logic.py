@@ -10,6 +10,9 @@ def turn(player):
         return "blue"
 
 
+def calculate_coin_y(column):
+    return 100  # Placeholder
+
 def check_game_state(state, row_length):
     shp = state.shape
 
@@ -18,6 +21,3 @@ def check_game_state(state, row_length):
             print(x, y)
 
     return np.array([[2,1], [2, 2], [2, 3]])
-
-
-
