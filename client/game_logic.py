@@ -8,3 +8,5 @@ def turn(player):
         return "blue"
 
 
+def calculate_coin_y(column):
+    return 100  # Placeholder
