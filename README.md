@@ -11,3 +11,9 @@ foo@bar:fourinline$ python3 -m venv .
 foo@bar:fourinline$ . ./bin/activate
 foo@bar:fourinline$ pip install --upgrade pip
 foo@bar:fourinline$ pip install -r requirements.txt
+
+Running test
+
+```console
+foo@bar:fourinline/client$ python -m unittest discover
+
