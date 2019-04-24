@@ -4,6 +4,7 @@ from pyglet.window import key
 import game_logic
 from pointer import Pointer
 from coin import Coin
+import constants as const
 
 # Resources loading
 
@@ -11,12 +12,7 @@ board_image = pyglet.resource.image('assets/board.png')
 
 
 # Init
-w = 581
-h = 520
-
-active_player = 'blue'
-
-window = pyglet.window.Window(w, h)
+window = pyglet.window.Window(const.window_width, const.window_height)
 
 coins = []
 blue_coin_batch = pyglet.graphics.Batch()
@@ -30,38 +26,40 @@ def on_draw():
     window.clear()
     board_image.blit(0, 0)
 
-    pointer.draw()
-
     blue_coin_batch.draw()
     red_coin_batch.draw()
+
+    pointer.draw()
 
 
 @window.event
 def on_key_press(symbol, modifiers):
-    global active_player
-
     if symbol == key.LEFT:
         pointer.move_left()
     elif symbol == key.RIGHT:
         pointer.move_right()
 
     if symbol == key.ENTER or symbol == key.SPACE:
-        coin = Coin(pointer.x - 3, game_logic.calculate_coin_y(pointer.column))
-        coin.scale = 0.3
+        place_coin(game_logic.calculate_coin_row(pointer.column), pointer.column)
 
-        if active_player == 'red':
-            pointer.set_color('red')
 
+def place_coin(row, column):
+    if row < 6:
+        coin = Coin(pointer.x - const.coin_x_offset, const.coin_y_offset + 80 * row)
+
+        if game_logic.active_player == 'red':
             coin.set_batch(red_coin_batch)
             coin.set_color('red')
         else:
-            pointer.set_color('blue')
-
             coin.set_batch(blue_coin_batch)
             coin.set_color('blue')
 
         coins.append(coin)
-        active_player = game_logic.turn(active_player)
+        game_logic.add_coin(row, column, game_logic.active_player)
+
+        new_color = game_logic.turn(game_logic.active_player)
+        game_logic.active_player = new_color
+        pointer.set_color(new_color)
 
 
 if __name__ == '__main__':
