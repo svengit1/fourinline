@@ -1,30 +1,24 @@
 import pyglet
 from pyglet.window import key
-from game_logic import *
+
+import game_logic
+from pointer import Pointer
+from coin import Coin
+import constants as const
 
 # Resources loading
-red_coin_image = pyglet.resource.image('assets/coin-red.png')
-blue_coin_image = pyglet.resource.image('assets/coin-blue.png')
+
 board_image = pyglet.resource.image('assets/board.png')
 
-pointer_red_image = pyglet.resource.image('assets/pointer-red.png')
-pointer_blue_image = pyglet.resource.image('assets/pointer-blue.png')
 
 # Init
-w = 581
-h = 520
+window = pyglet.window.Window(const.window_width, const.window_height)
 
-active_player = 'blue'
-
-window = pyglet.window.Window(w, h)
-
-blue_coins = []
-red_coins = []
+coins = []
 blue_coin_batch = pyglet.graphics.Batch()
 red_coin_batch = pyglet.graphics.Batch()
 
-pointer = pyglet.sprite.Sprite(pointer_blue_image, 25+(80*6), 470)
-pointer.scale = 0.4
+pointer = Pointer()
 
 
 @window.event
@@ -32,26 +26,40 @@ def on_draw():
     window.clear()
     board_image.blit(0, 0)
 
+    blue_coin_batch.draw()
+    red_coin_batch.draw()
+
     pointer.draw()
 
 
 @window.event
 def on_key_press(symbol, modifiers):
-    global active_player
-
     if symbol == key.LEFT:
-        if pointer.x != 25:
-            pointer.x -= 80
+        pointer.move_left()
     elif symbol == key.RIGHT:
-        if pointer.x != 505:
-            pointer.x += 80
+        pointer.move_right()
 
     if symbol == key.ENTER or symbol == key.SPACE:
-        if active_player == 'red':
-            pointer.image = pointer_red_image
+        place_coin(game_logic.calculate_coin_row(pointer.column), pointer.column)
+
+
+def place_coin(row, column):
+    if row < 6:
+        coin = Coin(pointer.x - const.coin_x_offset, const.coin_y_offset + 80 * row)
+
+        if game_logic.active_player == 'red':
+            coin.set_batch(red_coin_batch)
+            coin.set_color('red')
         else:
-            pointer.image = pointer_blue_image
-        active_player = turn(active_player)
+            coin.set_batch(blue_coin_batch)
+            coin.set_color('blue')
+
+        coins.append(coin)
+        game_logic.add_coin(row, column, game_logic.active_player)
+
+        new_color = game_logic.turn(game_logic.active_player)
+        game_logic.active_player = new_color
+        pointer.set_color(new_color)
 
 
 if __name__ == '__main__':
