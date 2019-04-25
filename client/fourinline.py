@@ -19,6 +19,7 @@ blue_coin_batch = pyglet.graphics.Batch()
 red_coin_batch = pyglet.graphics.Batch()
 
 pointer = Pointer()
+board = game_logic.Board()
 
 
 @window.event
@@ -40,7 +41,7 @@ def on_key_press(symbol, modifiers):
         pointer.move_right()
 
     if symbol == key.ENTER or symbol == key.SPACE:
-        place_coin(game_logic.calculate_coin_row(pointer.column), pointer.column)
+        place_coin(board.calculate_coin_row(pointer.column), pointer.column)
 
 
 def place_coin(row, column):
@@ -55,7 +56,7 @@ def place_coin(row, column):
             coin.set_color('blue')
 
         coins.append(coin)
-        game_logic.add_coin(row, column, game_logic.active_player)
+        board.add_coin(row, column, game_logic.active_player)
 
         new_color = game_logic.turn(game_logic.active_player)
         game_logic.active_player = new_color
