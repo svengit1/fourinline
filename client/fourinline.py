@@ -5,6 +5,7 @@ import game_logic
 from pointer import Pointer
 from coin import Coin
 import constants as const
+from board import Board
 
 # Resources loading
 
@@ -19,7 +20,7 @@ blue_coin_batch = pyglet.graphics.Batch()
 red_coin_batch = pyglet.graphics.Batch()
 
 pointer = Pointer()
-board = game_logic.Board()
+board = Board()
 
 
 @window.event
