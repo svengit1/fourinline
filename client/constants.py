@@ -9,3 +9,6 @@ pointer_scale = 0.4
 pointer_start_x = 23
 pointer_start_y = 470
 pointer_move = 80
+
+rows = 6
+columns = 7
