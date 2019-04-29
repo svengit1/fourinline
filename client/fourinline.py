@@ -7,6 +7,7 @@ from coin import Coin
 import constants as const
 from board import Board
 from turn_indicator import TurnIndicator
+from pyglet.gl import *
 
 # Resources loading
 
@@ -29,11 +30,13 @@ turn_indicator = TurnIndicator()
 @window.event
 def on_draw():
     window.clear()
-    board_image.blit(0, 40)
+    glEnable(GL_BLEND)
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
     blue_coin_batch.draw()
     red_coin_batch.draw()
 
+    board_image.blit(0, 40)
     pointer.draw()
     turn_indicator.draw()
 

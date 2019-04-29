@@ -7,7 +7,7 @@ class Coin(pyglet.sprite.Sprite):
 
     def __init__(self, x, y):
         pyglet.sprite.Sprite.__init__(self, self.red_image, x, y)
-        self.scale = 0.3
+        self.scale = 0.35
 
     def set_batch(self, batch):
         self.batch = batch

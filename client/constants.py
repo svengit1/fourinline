@@ -2,8 +2,8 @@ window_width = 581
 window_height = 560
 
 coin_scale = 0.3
-coin_x_offset = 3
-coin_y_offset = 61
+coin_x_offset = 7
+coin_y_offset = 57
 
 pointer_scale = 0.4
 pointer_start_x = 23
