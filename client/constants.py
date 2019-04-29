@@ -1,13 +1,13 @@
 window_width = 581
-window_height = 520
+window_height = 560
 
 coin_scale = 0.3
 coin_x_offset = 3
-coin_y_offset = 21
+coin_y_offset = 61
 
 pointer_scale = 0.4
 pointer_start_x = 23
-pointer_start_y = 470
+pointer_start_y = 510
 pointer_move = 80
 
 rows = 6

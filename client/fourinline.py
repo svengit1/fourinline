@@ -6,6 +6,7 @@ from pointer import Pointer
 from coin import Coin
 import constants as const
 from board import Board
+from turn_indicator import TurnIndicator
 
 # Resources loading
 
@@ -13,7 +14,7 @@ board_image = pyglet.resource.image('assets/board.png')
 
 
 # Init
-window = pyglet.window.Window(const.window_width, const.window_height)
+window = pyglet.window.Window(const.window_width, const.window_height, caption='Connect Four')
 
 coins = []
 blue_coin_batch = pyglet.graphics.Batch()
@@ -22,16 +23,19 @@ red_coin_batch = pyglet.graphics.Batch()
 pointer = Pointer()
 board = Board()
 
+turn_indicator = TurnIndicator()
+
 
 @window.event
 def on_draw():
     window.clear()
-    board_image.blit(0, 0)
+    board_image.blit(0, 40)
 
     blue_coin_batch.draw()
     red_coin_batch.draw()
 
     pointer.draw()
+    turn_indicator.draw()
 
 
 @window.event
@@ -62,6 +66,7 @@ def place_coin(row, column):
         new_color = game_logic.turn(game_logic.active_player)
         game_logic.active_player = new_color
         pointer.set_color(new_color)
+        turn_indicator.switch_image()
 
 
 if __name__ == '__main__':
