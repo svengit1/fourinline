@@ -9,7 +9,7 @@ from board import Board
 from visuals.pointer import Pointer
 from visuals.coin import Coin
 from visuals.turn_indicator import TurnIndicator
-from visuals.marker import create_line
+import visuals.marker as marker
 
 # Resources loading
 
@@ -18,7 +18,7 @@ board_image = pyglet.resource.image('assets/board.png')
 
 # Init
 
-window = pyglet.window.Window(const.window_width, const.window_height, caption='Connect Four')
+window = pyglet.window.Window(const.WINDOW_WIDTH, const.WINDOW_HEIGHT, caption='Connect Four')
 
 coins = []
 blue_coin_batch = pyglet.graphics.Batch()
@@ -60,19 +60,19 @@ def on_key_press(symbol, modifiers):
 
     if symbol == key.ENTER or symbol == key.SPACE:
         place_coin(board.calculate_coin_row(pointer.column), pointer.column)
-        marker_batch.add(*create_line((10, 10), (100, 100), (255, 255, 0)))
+        victory_marker([(0, 5), (6, 0)])
 
 
 def place_coin(row, column):
     if row < 6:
-        coin = Coin(pointer.x - const.coin_x_offset, const.coin_y_offset + 80 * row)
+        coin = Coin(const.COIN_X_START + (column * const.COIN_OFFSET),
+                    const.COIN_Y_START + (row * const.COIN_OFFSET))
 
         if game_logic.active_player == 'red':
             coin.set_batch(red_coin_batch)
-            coin.set_color('red')
         else:
             coin.set_batch(blue_coin_batch)
-            coin.set_color('blue')
+        coin.set_color(game_logic.active_player)
 
         coins.append(coin)
         board.add_coin(row, column, game_logic.active_player)
@@ -81,6 +81,16 @@ def place_coin(row, column):
         game_logic.active_player = new_color
         pointer.set_color(new_color)
         turn_indicator.switch_image()
+
+
+def victory_marker(points):
+    one = (50 + (points[0][0] * const.COIN_OFFSET),
+           90 + (points[0][1] * const.COIN_OFFSET))
+
+    two = (50 + (points[-1][0] * const.COIN_OFFSET),
+           90 + (points[-1][1] * const.COIN_OFFSET))
+
+    marker_batch.add(*marker.create_line(one, two, const.YELLOW))
 
 
 if __name__ == '__main__':

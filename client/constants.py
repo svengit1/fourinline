@@ -1,14 +1,17 @@
-window_width = 581
-window_height = 560
+WINDOW_WIDTH = 581
+WINDOW_HEIGHT = 560
 
-coin_scale = 0.3
-coin_x_offset = 7
-coin_y_offset = 57
+COIN_SCALE = 0.3
+COIN_X_START = 15
+COIN_Y_START = 57
+COIN_OFFSET = 80
 
-pointer_scale = 0.4
-pointer_start_x = 23
-pointer_start_y = 510
-pointer_move = 80
+POINTER_SCALE = 0.4
+POINTER_START_X = 23
+POINTER_START_Y = 510
+POINTER_MOVE = 80
 
-rows = 6
-columns = 7
+GAME_ROWS = 6
+GAME_COLUMNS = 7
+
+YELLOW = (255, 255, 0)

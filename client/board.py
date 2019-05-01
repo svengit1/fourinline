@@ -7,7 +7,7 @@ class Board:
         board = None
 
         def __init__(self):
-            self.board = np.zeros((const.rows, const.columns), dtype='int64')
+            self.board = np.zeros((const.GAME_ROWS, const.GAME_COLUMNS), dtype='int64')
 
         def calculate_coin_row(self, column):
             return 6 - np.bincount(self.board[:, column])[0]
