@@ -10,22 +10,46 @@ def turn(player):
         return "blue"
 
 
-def check_game_state(state, row_length, player):
-    shp = state.shape
-    result = []
-    print("Shape ", shp)
-    for y in range(0, shp[0]):
-        inrow = 0
-        row = []
-        for x in range(0, shp[1]):
-            if state[y, x] == player:
-                inrow += 1
-                row.append([y, x])
+def check_game_state(board):
+    victory_sums = (7, 15, 30, 60)
+    victory_positions = [range(0, 4), range(1, 5), range(2, 6), range(3, 7)]
 
-            if state[y, x] == 0 or x == shp[1]-1:
-                if inrow >= row_length and len(row) > 0:
-                    result.append(row)
-                inrow = 0
-                row = []
-    print(result)
-    return np.array(result)
+    v = [0, 1, 2, 4, 8, 16, 32]
+    state = list(board.dot(v[:len(board[0])]))
+    intersect = set(state).intersection(victory_sums)
+
+    if intersect:
+        i = intersect.pop()
+        row = state.index(i)
+        return [(row, e) for e in victory_positions[victory_sums.index(i)]]
+    else:
+        return []
+
+
+def _check_game_over_helper(board):
+    state = check_game_state(board)
+    if len(state) == 4:
+        return state
+    else:
+        return None
+
+
+def check_game_over(board_one, board_two):
+    game = []
+    t = _check_game_over_helper(board_one)
+    if t:
+        game = t
+
+    t = _check_game_over_helper(board_two)
+    if t:
+        game = t
+
+    t = _check_game_over_helper(board_one.T)
+    if t:
+        game = list(map(lambda f: f[::-1], t))
+
+    t = _check_game_over_helper(board_two.T)
+    if t:
+        game = list(map(lambda f: f[::-1], t))
+
+    return game
