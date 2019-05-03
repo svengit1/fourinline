@@ -1,6 +1,10 @@
-import numpy as np
+import constants as const
 
 active_player = 'blue'
+
+victory_sums = (15, 30, 60, 120)
+victory_positions = [range(i, i+4) for i in range(4)]
+power_of_two = [2**n for n in range(max(const.GAME_ROWS, const.GAME_COLUMNS)+1)]
 
 
 def turn(player):
@@ -11,11 +15,7 @@ def turn(player):
 
 
 def check_game_state(board):
-    victory_sums = (7, 15, 30, 60)
-    victory_positions = [range(0, 4), range(1, 5), range(2, 6), range(3, 7)]
-
-    v = [0, 1, 2, 4, 8, 16, 32]
-    state = list(board.dot(v[:len(board[0])]))
+    state = list(board.dot(power_of_two[:len(board[0])]))
     intersect = set(state).intersection(victory_sums)
 
     if intersect:
