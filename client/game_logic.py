@@ -1,17 +1,9 @@
 import constants as const
-
-active_player = 'blue'
+import numpy as np
 
 victory_sums = (15, 30, 60, 120)
 victory_positions = [range(i, i+4) for i in range(4)]
 power_of_two = [2**n for n in range(max(const.GAME_ROWS, const.GAME_COLUMNS)+1)]
-
-
-def turn(player):
-    if player == "blue":
-        return "red"
-    elif player == "red":
-        return "blue"
 
 
 def check_game_state(board):
@@ -34,21 +26,23 @@ def _check_game_over_helper(board):
         return None
 
 
-def check_game_over(board_one, board_two):
+def check_game_over(board):
+    b_p1 = np.where(board < 1, 0, 1)
+    b_p2 = np.where(board > -1, 0, 1)
     game = []
-    t = _check_game_over_helper(board_one)
+    t = _check_game_over_helper(b_p1)
     if t:
         game = t
 
-    t = _check_game_over_helper(board_two)
+    t = _check_game_over_helper(b_p2)
     if t:
         game = t
 
-    t = _check_game_over_helper(board_one.T)
+    t = _check_game_over_helper(b_p1.T)
     if t:
         game = list(map(lambda f: f[::-1], t))
 
-    t = _check_game_over_helper(board_two.T)
+    t = _check_game_over_helper(b_p2.T)
     if t:
         game = list(map(lambda f: f[::-1], t))
 

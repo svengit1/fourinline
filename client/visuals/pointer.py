@@ -7,9 +7,10 @@ class Pointer(pyglet.sprite.Sprite):
     red_image = pyglet.resource.image('assets/pointer-red.png')
     blue_image = pyglet.resource.image('assets/pointer-blue.png')
 
-    def __init__(self):
-        pyglet.sprite.Sprite.__init__(self, img=self.blue_image, x=const.POINTER_START_X, y=const.POINTER_START_Y)
+    def __init__(self, nxt):
+        super().__init__(img=self.blue_image, x=const.POINTER_START_X, y=const.POINTER_START_Y)
         self.scale = const.POINTER_SCALE
+        self.set_color(nxt)
 
     def move_left(self):
         if self.column != 0:
@@ -21,8 +22,8 @@ class Pointer(pyglet.sprite.Sprite):
             self.x += const.POINTER_MOVE
             self.column += 1
 
-    def set_color(self, color):
-        if color == 'red':
-            self.image = self.red_image
-        else:
+    def set_color(self, nxt):
+        if nxt == -1:
             self.image = self.blue_image
+        else:
+            self.image = self.red_image

@@ -1,36 +1,35 @@
 import numpy as np
 import constants as const
+import random as rnd
 
 
 class Board:
-    class __Board:
-        board_red = None
-        board_blue = None
-
-        def __init__(self):
-            self.board_red = np.zeros((const.GAME_ROWS, const.GAME_COLUMNS), dtype='int64')
-            self.board_blue = np.zeros((const.GAME_ROWS, const.GAME_COLUMNS), dtype='int64')
-
-        def calculate_coin_row(self, column):
-            return 6 - np.bincount(np.where(self.board_red != 0, self.board_red, self.board_blue)[:, column])[0]
-
-        def add_coin(self, row, column, player):
-            if player == 'red':
-                self.board_red[row, column] = 1
-            else:
-                self.board_blue[row, column] = 1
-
-        def get_red_board(self):
-            return self.board_red
-
-        def get_blue_board(self):
-            return self.board_blue
-
-    instance = False
+    board = None
+    player = 0
 
     def __init__(self):
-        if not Board.instance:
-            Board.instance = Board.__Board()
+        self.clear_board()
+        self.player = rnd.choice([-1, 1])
 
-    def __getattr__(self, name):
-        return getattr(self.instance, name)
+    def move(self, column):
+        row = np.where(abs(self.board[:, column]) == 1)[0]
+        if len(row):
+            row = row[0]
+        else:
+            row = self.board.shape[0]
+
+        row -= 1
+
+        if row > 0:
+            self.board[row, column] = self.player
+            self.player *= -1
+        return row
+
+    def next_player(self):
+        return self.player
+
+    def get_board(self):
+        return self.board
+
+    def clear_board(self):
+        self.board = np.zeros((const.GAME_ROWS, const.GAME_COLUMNS), dtype='int64')
