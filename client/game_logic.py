@@ -21,6 +21,35 @@ def check_game_state(board):
         return []
 
 
+def get_diag_indices(off, shp, d):
+    ind = []
+    row = 0
+    column = 0
+    diagonal_ind = np.nonzero(d)[0]
+
+    if off >= 0:
+        for column in range(off, shp[1]):
+            ind.append((row, column))
+            row += 1
+    else:
+        for row in range(abs(off), shp[0]):
+            ind.append((row, column))
+            column += 1
+
+    return [ind[i] for i in diagonal_ind]
+
+
+def check_game_state_diagonal(board):
+    for off in range(-board.shape[0]+1, board.shape[1]):
+        d = np.diagonal(board, off)
+        val = d.dot(power_of_two[:len(d)])
+
+        if val in victory_sums:
+            return get_diag_indices(off, board.shape, d)
+
+    return None
+
+
 def check_game_over(board):
     b_p1 = np.where(board < 1, 0, 1)
     b_p2 = np.where(board > -1, 0, 1)
@@ -41,5 +70,21 @@ def check_game_over(board):
     t = check_game_state(b_p2.T)
     if t:
         game = list(map(lambda f: f[::-1], t))
+
+    t = check_game_state_diagonal(b_p1)
+    if t:
+        game = t
+
+    t = check_game_state_diagonal(b_p2)
+    if t:
+        game = t
+
+    # t = check_game_state_diagonal(b_p1.fliplr())
+    # if t:
+    #     game = t
+    #
+    # t = check_game_state_diagonal(b_p2.fliplr())
+    # if t:
+    #     game = t
 
     return game
