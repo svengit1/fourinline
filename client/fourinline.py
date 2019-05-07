@@ -1,6 +1,6 @@
 import pyglet
 from pyglet.window import key
-# from pyglet.gl import *
+from pyglet.window import mouse
 
 import game_logic
 import constants as const
@@ -11,7 +11,7 @@ from board import Board
 
 from visuals.pointer import Pointer
 from visuals.turn_indicator import TurnIndicator
-
+from visuals.new_game_button import NewGameButton
 
 # Init
 
@@ -31,6 +31,8 @@ board = Board()
 pointer = Pointer(board.next_player())
 turn_indicator = TurnIndicator(board.next_player())
 
+new_game_button = NewGameButton()
+
 
 @window.event
 def on_draw():
@@ -40,6 +42,7 @@ def on_draw():
 
     pointer.draw()
     turn_indicator.draw()
+    new_game_button.draw()
 
 
 @window.event
@@ -59,6 +62,13 @@ def on_key_press(symbol, modifiers):
             victory_marker(game)
 
 
+@window.event
+def on_mouse_press(x, y, button, modifiers):
+    if button == mouse.LEFT:
+        if new_game_button.is_clicked(x, y):
+            restart_game()
+
+
 def place_coin(row, column, player):
     c = Coin(const.COIN_X_START + (column * const.COIN_OFFSET),
              const.COIN_Y_START + ((const.GAME_ROWS-row-1) * const.COIN_OFFSET),
@@ -75,6 +85,11 @@ def victory_marker(points):
     for i in c:
         i.group = front
         i.set_victory()
+
+
+def restart_game():
+    coins.clear()
+    pointer.x = const.POINTER_START_X
 
 
 if __name__ == '__main__':
