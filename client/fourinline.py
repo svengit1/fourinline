@@ -4,11 +4,9 @@ from pyglet.window import mouse
 
 import game_logic
 import constants as const
-
-from visuals.coin import Coin
-
 from board import Board
 
+from visuals.coin import Coin
 from visuals.pointer import Pointer
 from visuals.turn_indicator import TurnIndicator
 from visuals.new_game_button import NewGameButton
@@ -89,7 +87,8 @@ def victory_marker(points):
 
 def restart_game():
     coins.clear()
-    pointer.x = const.POINTER_START_X
+    pointer.reset_pointer()
+    board.clear_board()
 
 
 if __name__ == '__main__':

@@ -27,3 +27,7 @@ class Pointer(pyglet.sprite.Sprite):
             self.image = self.blue_image
         else:
             self.image = self.red_image
+
+    def reset_pointer(self):
+        self.x = const.POINTER_START_X
+        self.column = 0
