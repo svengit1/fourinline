@@ -70,7 +70,8 @@ def place_coin(row, column, player):
 
 
 def victory_marker(points):
-    c = [list(filter(lambda coin: coin.get_position() == p, coins))[0] for p in points]
+    print('Points', points)
+    c = [list(filter(lambda coin: coin.get_position() == p, coins))[0] for p in points[0]]
     for i in c:
         i.group = front
 
